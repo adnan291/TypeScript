@@ -1,36 +1,12 @@
 "use strict";
-const num1Element = document.getElementById('num1');
-const num2Element = document.getElementById('num2');
-const buttonElement = document.querySelector('button');
-const numResults = [];
-const textResults = [];
-function add(num1, num2) {
-    if (typeof num1 === 'number' && typeof num2 === 'number') {
-        return num1 + num2;
-    }
-    else if (typeof num1 === 'string' && typeof num2 === 'string') {
-        return num1 + ' ' + num2;
-    }
-    return +num1 + +num2;
-}
-function printResult(resultObj) {
-    console.log(resultObj.val);
-}
-buttonElement.addEventListener('click', () => {
-    const num1 = num1Element.value;
-    const num2 = num2Element.value;
-    const result = add(+num1, +num2);
-    numResults.push(result);
-    const stringresult = add(num1, num2);
-    textResults.push(stringresult);
-    printResult({ val: result, timestamp: new Date() });
-    console.log(numResults, textResults);
-});
-const myPromise = new Promise((res, rej) => {
-    setTimeout(() => {
-        res('It Worked');
-    }, 1000);
-});
-myPromise.then((result) => {
-    console.log(result.split('w'));
-});
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const todos_1 = __importDefault(require("./routes/todos"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const app = (0, express_1.default)();
+app.use(todos_1.default);
+app.use(body_parser_1.default.json());
+app.listen(3000);
