@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 
 import {Todo} from '../models/todo';
 
-const todos : Todo[]= [];
+let todos : Todo[]= [];
 
 const router = Router();
 
@@ -14,25 +14,20 @@ res.status(200).json({ todos : todos})
 router.post('/todo', (req, res, next)=> {
     const newTodo: Todo = {
         id: new Date().toISOString(),
-        text: req.body.text
+        text: req.body.text,
     };
 
     todos.push(newTodo);
     res.status(201).json({ message: 'Todo added successfully', todo: newTodo });
 });
 
-router.post('/deletetodo:todoId', (req, res, next)=> {
-   const tid = req.params.todoId;
-   const todoIndex = todos.findIndex(todoItem => todoItem.id === tid);
-   if (todoIndex >= 0) {
-    todos.splice(todoIndex, 1);
-    res.status(200).json({ message: 'Todo deleted successfully' });
-  } else {
-    res.status(404).json({ message: 'Todo not found' });
-  }
+router.post('/deletetodo/:todoId', (req, res, next)=> {
+   todos = todos.filter((todoItem) => todoItem.id != req.params.todoId);
+   res.status(200).json({ message: 'Todo deleted successfully' });
+
 });
 
-router.post('/updatetodo:todoId', (req, res, next)=> {
+router.post('/updatetodo/:todoId', (req, res, next)=> {
    const tid = req.params.todoId;
    const todoIndex = todos.findIndex(todoItem => todoItem.id === tid);
    if (todoIndex >= 0) {
